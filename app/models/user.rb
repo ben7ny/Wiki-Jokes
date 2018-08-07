@@ -7,7 +7,9 @@ class User < ApplicationRecord
   after_create :send_signup_confirmation_email
 
   after_initialize do |user|
-    user.role = "standard"
+    if user.role.nil?
+      user.role = "standard"
+    end
   end
 
 
