@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   after_create :send_signup_confirmation_email
-
+  has_many :wikis
 
   private
   def send_signup_confirmation_email
