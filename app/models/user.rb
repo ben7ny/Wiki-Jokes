@@ -5,6 +5,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   after_create :send_signup_confirmation_email
+
+  after_initialize do |user|
+    user.role = "standard"
+  end
+
+
   has_many :wikis
 
   validates :role, inclusion: { in: [
