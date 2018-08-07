@@ -23,7 +23,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    !@record.private?
   end
 
   def edit?

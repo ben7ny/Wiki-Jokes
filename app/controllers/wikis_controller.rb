@@ -44,6 +44,8 @@ class WikisController < ApplicationController
   # PATCH/PUT /wikis/1.json
   def update
     respond_to do |format|
+      authorize @wiki, policy_class: ApplicationPolicy
+
       if @wiki.update(wiki_params)
         format.html { redirect_to @wiki, notice: 'Wiki was successfully updated.' }
         format.json { render :show, status: :ok, location: @wiki }
