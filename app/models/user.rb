@@ -7,6 +7,12 @@ class User < ApplicationRecord
   after_create :send_signup_confirmation_email
   has_many :wikis
 
+  validates :role, inclusion: { in: [
+    "standard",
+    "premium",
+    "admin"
+  ]}
+ 
   private
   def send_signup_confirmation_email
   	UserNotifier.send_signup_email(self).deliver
