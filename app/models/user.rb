@@ -20,6 +20,10 @@ class User < ApplicationRecord
     "premium",
     "admin"
   ]}
+
+  def upgrade_account
+    update_attributes!(role: "premium")
+  end
  
   private
   def send_signup_confirmation_email
