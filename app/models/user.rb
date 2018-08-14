@@ -24,6 +24,10 @@ class User < ApplicationRecord
   def upgrade_account
     update_attributes!(role: "premium")
   end
+
+  def downgrade_account
+    update_attributes!(role: "standard") 
+  end
  
   private
   def send_signup_confirmation_email

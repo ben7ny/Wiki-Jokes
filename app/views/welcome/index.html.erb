@@ -1,9 +1,14 @@
 <h1>Welcome To Blocipedia</h1>
 <h2>Role: <%= current_user.role %></h2>
+
 <% if current_user.role == "standard" %>
 <p>upgrade to a premium account to create private wikis</p>
  <%= form_tag charges_path do %>
    <h4>Upgrade Now!</h4>
    <script class='stripe-button' src="https://checkout.stripe.com/checkout.js" data-key="<%= @stripe_btn_data[:key] %>" data-amount="<%= @stripe_btn_data[:amount] %>" data-description="<%= @stripe_btn_data[:description] %>" ></script>
  <% end %>
+<% elsif current_user.role == "premium" %>
+  <%= form_tag refunds_path do %>
+  	<%= submit_tag "Downgrade", data: { confirm: "Are you sure?" } %>
+  <% end %>
 <% end %>

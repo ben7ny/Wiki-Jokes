@@ -20,6 +20,7 @@ class ChargesController < ApplicationController
    	)
  
    	if charge.paid
+   		current_user.update_attributes!(latest_stripe_charge_id: charge.id)
    	  current_user.upgrade_account
    	  flash[:notice] = "Thanks for all the money, #{current_user.email}! Feel free to pay me again."
 	 	redirect_to root_path
