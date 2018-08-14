@@ -3,6 +3,8 @@ class WikisController < ApplicationController
   before_action :authenticate_user!
   before_action :set_wiki, only: [:edit, :update, :destroy]
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   # GET /wikis
   # GET /wikis.json
   def index
@@ -28,7 +30,7 @@ class WikisController < ApplicationController
   # POST /wikis.json
   def create
     @wiki = current_user.wikis.new(wiki_params)
-
+    authorize @wiki
     respond_to do |format|
       if @wiki.save
         format.html { redirect_to @wiki, notice: 'Wiki was successfully created.' }
@@ -75,5 +77,10 @@ class WikisController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def wiki_params
       params.require(:wiki).permit(:title, :body, :private)
+    end
+
+    def user_not_authorized
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to(request.referrer || root_path)
     end
 end
