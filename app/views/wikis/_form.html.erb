@@ -21,10 +21,12 @@
     <%= form.text_area :body %>
   </div>
 
+<% if current_user.admin? || current_user.premium? %>
   <div class="field">
     <%= form.label :private %>
     <%= form.check_box :private %>
   </div>
+<% end %>
 
   <div class="actions">
     <%= form.submit %>

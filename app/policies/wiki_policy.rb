@@ -16,7 +16,7 @@ class WikiPolicy < ApplicationPolicy
 
   def create?
     if @record.private?
-      @user.role == "premium"
+      @user.role == "premium" || @user.role == "admin"
     else
       true
     end
@@ -27,7 +27,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    !@record.private?
+    if @user.role == "premium" || @user.role == "admin"
+      true
+    else
+      !@record.private? && !@record.changed.include?("private")
+    end
   end
 
   def edit?

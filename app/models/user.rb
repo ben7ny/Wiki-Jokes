@@ -29,6 +29,14 @@ class User < ApplicationRecord
     update_attributes!(role: "standard") 
   end
  
+  def admin?
+    role == "admin"
+  end
+
+  def premium?
+    role == "premium"
+  end
+
   private
   def send_signup_confirmation_email
   	UserNotifier.send_signup_email(self).deliver
