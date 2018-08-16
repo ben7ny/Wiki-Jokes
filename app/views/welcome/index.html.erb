@@ -9,6 +9,6 @@
  <% end %>
 <% elsif current_user.role == "premium" %>
   <%= form_tag refunds_path do %>
-  	<%= submit_tag "Downgrade", data: { confirm: "Are you sure?" } %>
+  	<%= submit_tag "Downgrade", data: { confirm: "All your private wikis will become public. Are you sure you want to downgrade?" } %>
   <% end %>
 <% end %>

@@ -27,6 +27,9 @@ class User < ApplicationRecord
 
   def downgrade_account
     update_attributes!(role: "standard") 
+    wikis.each do |wiki|
+      wiki.update_attributes!(private: false)
+    end
   end
  
   def admin?
