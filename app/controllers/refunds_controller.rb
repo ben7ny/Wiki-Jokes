@@ -10,7 +10,7 @@ class RefundsController < ApplicationController
       	)
    
       	if refund.status == "succeeded"
-      	  current_user.downgrade_account
+      	  current_user.update_attributes!(role: "standard")
       	  flash[:notice] = "sorry to see you go :("
 	   	  redirect_to root_path
       	else

@@ -5,6 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   after_create :send_signup_confirmation_email
+  before_update :downgrade_account, if: Proc.new{ |user| 
+    user.role_changed? &&
+    user.changes[:role].first == "premium" &&
+    user.changes[:role].second == "standard"
+  }
 
   after_initialize do |user|
     if user.role.nil?
@@ -26,10 +31,7 @@ class User < ApplicationRecord
   end
 
   def downgrade_account
-    update_attributes!(role: "standard") 
-    wikis.each do |wiki|
-      wiki.update_attributes!(private: false)
-    end
+    self.wikis.update_all(private: false)
   end
  
   def admin?
