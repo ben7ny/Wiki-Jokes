@@ -48,12 +48,19 @@ class WikisController < ApplicationController
   def update
     respond_to do |format|
       authorize @wiki
-      if @wiki.update(wiki_params)
-        format.html { redirect_to @wiki, notice: 'Wiki was successfully updated.' }
-        format.json { render :show, status: :ok, location: @wiki }
+      new_collabrator_ids = params[:wiki][:collaborations_attributes].values.collect{|c| c["user_id"].to_i}
+      if (@wiki.collaborators.ids & new_collabrator_ids).empty?
+        if @wiki.update(wiki_params)
+          format.html { redirect_to @wiki, notice: 'Wiki was successfully updated.' }
+          format.json { render :show, status: :ok, location: @wiki }
+        else
+          format.html { render :edit }
+          format.json { render json: @wiki.errors, status: :unprocessable_entity }
+        end
       else
+        flash[:alert] = "this user is already a collaborator"
         format.html { render :edit }
-        format.json { render json: @wiki.errors, status: :unprocessable_entity }
+        format.json { render status: :unprocessable_entity }
       end
     end
   end
