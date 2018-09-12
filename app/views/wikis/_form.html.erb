@@ -28,7 +28,32 @@
   </div>
 <% end %>
 
+<% if wiki.persisted? %>
+  <h2>Remove collaborators</h2>
+  <h4>Check tickbox to remove Collaborators</h4>
+  <%= form.fields_for :collaborations do |collaboration_form| %>
+      <%= collaboration_form.object.user.username %>
+      <%= collaboration_form.check_box :_destroy %><br>
+  <% end %><br>
+<% end %>
+
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<hr>
+
+<% if wiki.persisted? %>
+<h2>Add a Collaborator</h2>
+<%= form_with(model: wiki, local: true) do |form| %>
+  <%= form.fields_for :collaborations, wiki.collaborations.build do |collaboration_form| %>
+      <%= collaboration_form.select :user_id, options_for_select(User.other_users(current_user: current_user).collect{|user| [user.username, user.id]}) %>
+  <% end %>
+  <br><br>
+  <div class="actions">
+    <%= form.submit "Add Collaborator" %>
+  </div>
+<% end %>
+<% end %>
+

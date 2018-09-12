@@ -1,5 +1,5 @@
 class WikisController < ApplicationController
-  
+
   before_action :authenticate_user!
   before_action :set_wiki, only: [:edit, :update, :destroy]
 
@@ -48,7 +48,6 @@ class WikisController < ApplicationController
   def update
     respond_to do |format|
       authorize @wiki
-      
       if @wiki.update(wiki_params)
         format.html { redirect_to @wiki, notice: 'Wiki was successfully updated.' }
         format.json { render :show, status: :ok, location: @wiki }
@@ -77,7 +76,7 @@ class WikisController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def wiki_params
-      params.require(:wiki).permit(:title, :body, :private)
+      params.require(:wiki).permit(:title, :body, :private, collaborations_attributes: [:id, :user_id, :_destroy])
     end
 
     def user_not_authorized
