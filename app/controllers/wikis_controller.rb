@@ -8,7 +8,7 @@ class WikisController < ApplicationController
   # GET /wikis
   # GET /wikis.json
   def index
-    @wikis = Wiki.where(private: false)
+    @wikis = policy_scope(Wiki)
     @my_wikis = current_user.wikis
   end
 
