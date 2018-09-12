@@ -27,7 +27,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    if @user.role == "premium" || @user.role == "admin"
+    if @user.role == "premium" || @user.role == "admin" || @record.collaborators.include?(@user)
       true
     else
       !@record.private? && !@record.changed.include?("private")
@@ -66,7 +66,7 @@ class Scope
       all_wikis = scope.all
       wikis = []
       all_wikis.each do |wiki|
-        if wiki.public? || wiki.collaborators.include?(user)
+        if !wiki.private? || wiki.collaborators.include?(user)
           wikis << wiki # only show standard users public wikis and private wikis they are a collaborator on
         end
       end
